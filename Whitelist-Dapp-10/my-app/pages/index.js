@@ -8,22 +8,21 @@ import { WHITELIST_CONTRACT_ADDRESS, abi } from "../constants";
 export default function Home() {
 
   const [walletConnected, setWalletConnected] = useState(false);
-  // whether the current metamask address has joined the Whitelist or not
+
   const [joinedWhitelist, setJoinedWhitelist] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
   const [numberOfWhitelisted, setNumberOfWhitelisted] = useState(0);
-  // Create a reference to the Web3 Modal (used for connecting to Metamask) which persists as long as the page is open
+
   const web3ModalRef = useRef();
 
   const getProviderOrSigner = async (needSigner = false) => {
-    // Connect to Metamask
-    // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
+
     const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
 
-    // If user is not connected to the Rinkeby network, let them know and throw an error
+
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 4) {
       window.alert("Change the network to Rinkeby");
@@ -37,9 +36,7 @@ export default function Home() {
     return web3Provider;
   };
 
-  /**
-   * addAddressToWhitelist: Adds the current connected address to the whitelist
-   */
+
   const addAddressToWhitelist = async () => {
     try {
 
@@ -50,7 +47,7 @@ export default function Home() {
         abi,
         signer
       );
-      // call the addAddressToWhitelist from the contract
+
       const tx = await whitelistContract.addAddressToWhitelist();
       setLoading(true);
  
@@ -83,9 +80,7 @@ export default function Home() {
     }
   };
 
-  /**
-   * checkIfAddressInWhitelist: Checks if the address is in whitelist
-   */
+
   const checkIfAddressInWhitelist = async () => {
     try {
  
@@ -107,9 +102,7 @@ export default function Home() {
     }
   };
 
-  /*
-    connectWallet: Connects the MetaMask wallet
-  */
+
   const connectWallet = async () => {
     try {
 
@@ -123,9 +116,7 @@ export default function Home() {
     }
   };
 
-  /*
-    renderButton: Returns a button based on the state of the dapp
-  */
+
   const renderButton = () => {
     if (walletConnected) {
       if (joinedWhitelist) {
